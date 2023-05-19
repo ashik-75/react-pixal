@@ -1,35 +1,25 @@
-import { SignIn, useAuth, useUser } from "@clerk/clerk-react";
+import {
+  Route,
+  RouterProvider,
+  createBrowserRouter,
+  createRoutesFromElements,
+} from "react-router-dom";
+import RootLayout from "./Layout/RootLayout";
+import Artist from "./pages/Artist";
+import Dashboard from "./pages/Dashboard";
+import Homepage from "./pages/Homepage";
 
 function App() {
-  const user = useUser();
-
-  const auth = useAuth();
-
-  if (!user?.isLoaded) {
-    return <div>Loading ...</div>;
-  }
-  return (
-    <div>
-      {user.isSignedIn ? (
-        <div>
-          <button
-            className="rounded bg-rose-500 px-4 py-2"
-            onClick={auth.signOut}
-          >
-            Sign Out
-          </button>
-        </div>
-      ) : (
-        <SignIn />
-      )}
-
-      {user.isSignedIn ? (
-        <div>{user.user.username}</div>
-      ) : (
-        <div>Not Signned in</div>
-      )}
-    </div>
+  const router = createBrowserRouter(
+    createRoutesFromElements(
+      <Route element={<RootLayout />}>
+        <Route path="/" element={<Homepage />} />
+        <Route path="artist/" element={<Artist />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+      </Route>
+    )
   );
+  return <RouterProvider router={router} />;
 }
 
 export default App;
